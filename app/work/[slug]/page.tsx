@@ -22,7 +22,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
   const project = projects[index];
   if (!project) notFound();
 
-  const nextProject = projects[(index + 1) % projects.length];
+  const nextProject = projects[(index + 1) % projects.length]!;
 
   return (
     <div className="pt-[var(--nav-height)]">

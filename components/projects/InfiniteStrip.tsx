@@ -106,7 +106,9 @@ export function InfiniteStrip({
       inner.style.transform = `translateY(${-scrollY.current}px)`;
 
       // ── Distortion: scale each card based on distance from center + velocity
-      const containerH = container.clientHeight;
+      const c = containerRef.current;
+      if (!c) return;
+      const containerH = c.clientHeight;
       const containerCenter = containerH / 2;
       const absVel = Math.abs(velocity.current);
       const velNorm = Math.min(absVel / 18, 1);

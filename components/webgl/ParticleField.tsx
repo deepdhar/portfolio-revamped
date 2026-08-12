@@ -89,13 +89,13 @@ export function ParticleField() {
       let idx = 0;
       const threshold = 4.2;
       for (let i = 0; i < COUNT && idx < maxLines; i++) {
-        const ax = positions[i * 3];
-        const ay = positions[i * 3 + 1];
-        const az = positions[i * 3 + 2];
+        const ax = positions[i * 3]!;
+        const ay = positions[i * 3 + 1]!;
+        const az = positions[i * 3 + 2]!;
         for (let j = i + 1; j < COUNT && idx < maxLines; j++) {
-          const bx = positions[j * 3];
-          const by = positions[j * 3 + 1];
-          const bz = positions[j * 3 + 2];
+          const bx = positions[j * 3]!;
+          const by = positions[j * 3 + 1]!;
+          const bz = positions[j * 3 + 2]!;
           const dx = ax - bx;
           const dy = ay - by;
           const dz = az - bz;
@@ -112,7 +112,9 @@ export function ParticleField() {
         }
       }
       lineGeometry.setDrawRange(0, idx * 2);
-      lineGeometry.attributes.position.needsUpdate = true;
+      if (lineGeometry.attributes.position) {
+        lineGeometry.attributes.position.needsUpdate = true;
+      }
     }
 
     const pointer = { x: 0, y: 0, targetX: 0, targetY: 0 };
@@ -139,16 +141,18 @@ export function ParticleField() {
 
       const t = time * 0.0001;
       for (let i = 0; i < COUNT; i++) {
-        const bx = basePositions[i * 3];
-        const by = basePositions[i * 3 + 1];
-        const bz = basePositions[i * 3 + 2];
-        const speed = speeds[i];
+        const bx = basePositions[i * 3]!;
+        const by = basePositions[i * 3 + 1]!;
+        const bz = basePositions[i * 3 + 2]!;
+        const speed = speeds[i]!;
         positions[i * 3] = bx + Math.sin(t * speed + i) * 0.6 + pointer.x * 1.4;
         positions[i * 3 + 1] =
           by + Math.cos(t * speed + i * 1.3) * 0.5 + pointer.y * 1.1 - scrollY * 0.002;
         positions[i * 3 + 2] = bz + Math.sin(t * speed * 0.7 + i) * 0.4;
       }
-      geometry.attributes.position.needsUpdate = true;
+      if (geometry.attributes.position) {
+        geometry.attributes.position.needsUpdate = true;
+      }
 
       // recompute connective lines only every few frames — expensive O(n^2)
       if (time - lastLineUpdate > 140) {
