@@ -14,7 +14,7 @@ export function Contact() {
   }, []);
 
   function handleCopy() {
-    navigator.clipboard?.writeText("hello@deepdhar.dev").catch(() => {});
+    navigator.clipboard?.writeText("dhar2017.slg@gmail.com").catch(() => { });
     setCopied(true);
     setTimeout(() => setCopied(false), 1800);
   }
@@ -34,7 +34,7 @@ export function Contact() {
       </button>
 
       <p className="mt-6 font-mono text-xs uppercase tracking-wider text-muted">
-        {copied ? "Email copied" : "hello@deepdhar.dev — click to copy"}
+        {copied ? "Email copied" : "dhar2017.slg@gmail.com — click to copy"}
       </p>
 
       <div className="mt-24 flex flex-col justify-between gap-6 border-t border-border pt-8 font-mono text-xs uppercase tracking-[0.12em] text-muted sm:flex-row sm:items-center">

@@ -68,7 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         {/* Fixed background layers — in root stacking context BEFORE <main>.
             image: z-[1], canvas: z-[2] — both below <main z-[10]>. */}
-        <BackgroundRevealCanvas imageSrc="https://images.unsplash.com/photo-1754548930550-be9fa88874f4?w=1920&q=85&auto=format&fit=crop" />
+        <BackgroundRevealCanvas imageSrc="/media/hero-bg.png" />
         <div className="noise-overlay" />
         <Preloader />
         <SmoothScrollProvider>

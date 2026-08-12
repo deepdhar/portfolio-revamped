@@ -6,7 +6,7 @@ export function HeroFooter() {
   const [copied, setCopied] = useState(false);
 
   function handleCopy() {
-    navigator.clipboard?.writeText("hello@deepdhar.dev").catch(() => {});
+    navigator.clipboard?.writeText("dhar2017.slg@gmail.com").catch(() => { });
     setCopied(true);
     setTimeout(() => setCopied(false), 1800);
   }
@@ -22,7 +22,7 @@ export function HeroFooter() {
           data-cursor="link"
           className="font-body text-sm text-foreground transition-colors duration-300 hover:text-muted"
         >
-          {copied ? "Email copied!" : "hello@deepdhar.dev"}
+          {copied ? "Email copied!" : "dhar2017.slg@gmail.com"}
         </button>
       </div>
 

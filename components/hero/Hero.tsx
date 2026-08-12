@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import gsap from "gsap";
 import { splitTextReveal, fadeIn } from "@/lib/animations/helpers";
 import { IndexList } from "@/components/projects/IndexList";
@@ -14,36 +16,51 @@ export function Hero() {
   const roleRef = useRef<HTMLParagraphElement>(null);
   const indexRef = useRef<HTMLDivElement>(null);
   const [activeSlug, setActiveSlug] = useState<string | undefined>(projects[0]?.slug);
+  const [stripHovered, setStripHovered] = useState(false);
+  // Mobile contact copy state (separate from desktop HeroFooter)
+  const [mobileCopied, setMobileCopied] = useState(false);
+
+  function handleMobileCopy() {
+    navigator.clipboard?.writeText("dhar2017.slg@gmail.com").catch(() => { });
+    setMobileCopied(true);
+    setTimeout(() => setMobileCopied(false), 1800);
+  }
 
   useEffect(() => {
-    const tl = gsap.timeline({ defaults: { ease: "expo.out" }, delay: 1.9 });
+    const STORAGE_KEY = "hero-intro-done";
+    const alreadyPlayed = sessionStorage.getItem(STORAGE_KEY);
 
-    if (metaRef.current) {
-      tl.add(fadeIn(metaRef.current, { d: 0.6 }), 0);
-    }
-    if (headlineRef.current) {
-      tl.add(splitTextReveal(headlineRef.current, { delay: 0 }), 0.1);
-    }
-    if (roleRef.current) {
-      tl.add(fadeIn(roleRef.current, { d: 0.7 }), 0.55);
-    }
-    if (indexRef.current) {
-      tl.add(fadeIn(indexRef.current, { d: 0.7 }), 0.75);
+    if (alreadyPlayed) {
+      if (metaRef.current) gsap.set(metaRef.current, { opacity: 1, y: 0 });
+      if (roleRef.current) gsap.set(roleRef.current, { opacity: 1, y: 0 });
+      if (indexRef.current) gsap.set(indexRef.current, { opacity: 1, y: 0 });
+      if (headlineRef.current) gsap.set(headlineRef.current, { opacity: 1 });
+      return;
     }
 
-    return () => {
-      tl.kill();
-    };
+    const tl = gsap.timeline({
+      defaults: { ease: "expo.out" },
+      delay: 1.9,
+      onComplete: () => sessionStorage.setItem(STORAGE_KEY, "true"),
+    });
+
+    if (metaRef.current) tl.add(fadeIn(metaRef.current, { d: 0.6 }), 0);
+    if (headlineRef.current) tl.add(splitTextReveal(headlineRef.current, { delay: 0 }), 0.1);
+    if (roleRef.current) tl.add(fadeIn(roleRef.current, { d: 0.7 }), 0.55);
+    if (indexRef.current) tl.add(fadeIn(indexRef.current, { d: 0.7 }), 0.75);
+
+    return () => { tl.kill(); };
   }, []);
 
   return (
     <section id="top" className="grid grid-cols-1 lg:grid-cols-2">
-      {/* Left column: identity, headline, index, footer */}
+      {/* ── Left column: identity, headline, index, footer ── */}
       <div className="container-edge flex flex-col justify-between pb-16 pt-[calc(var(--nav-height)+2.5rem)] lg:min-h-[100svh] lg:pb-12">
         <div>
+          {/* "Available for select engagements" — desktop only */}
           <div
             ref={metaRef}
-            className="mb-6 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.14em] text-muted"
+            className="mb-6 hidden items-center gap-2 font-mono text-xs uppercase tracking-[0.14em] text-muted lg:flex"
           >
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-50" />
@@ -68,21 +85,69 @@ export function Hero() {
           </p>
         </div>
 
-        <div ref={indexRef} className="mt-20 lg:mt-0">
-          <IndexList activeSlug={activeSlug} />
+        {/* Index list — desktop only */}
+        <div ref={indexRef} className="mt-20 hidden lg:block lg:mt-0">
+          <IndexList activeSlug={activeSlug} hovering={stripHovered} />
         </div>
 
-        <HeroFooter />
+        {/* Footer with Contact + Available — desktop only */}
+        <div className="hidden lg:block">
+          <HeroFooter />
+        </div>
       </div>
 
-      {/* Right column: infinite scrolling strip with velocity-based barrel distortion */}
+      {/* ── Right column: infinite strip (desktop only) ── */}
       <div className="hidden lg:block">
-        <InfiniteStrip onActiveChange={setActiveSlug} />
+        <InfiniteStrip
+          onActiveChange={setActiveSlug}
+          onHoverChange={setStripHovered}
+        />
+      </div>
+
+      {/* ── Mobile: project cards + contact at bottom ── */}
+      <div className="lg:hidden">
+        {/* Project cards — normal page scroll */}
+        <div className="container-edge mt-8 flex flex-col gap-1">
+          {projects.map((project) => (
+            <Link
+              key={project.slug}
+              href={`/work/${project.slug}`}
+              className="group block"
+            >
+              <div
+                className="relative w-full overflow-hidden"
+                style={{ height: "64vw", maxHeight: 320 }}
+              >
+                <Image
+                  src={project.coverImage}
+                  alt={project.title}
+                  fill
+                  sizes="100vw"
+                  className="object-cover grayscale transition-[filter,transform] duration-700 group-active:grayscale-0"
+                  priority={project.slug === projects[0]?.slug}
+                />
+              </div>
+              <p className="mt-2 mb-6 font-body text-sm font-medium text-foreground">
+                {project.title}
+              </p>
+            </Link>
+          ))}
+        </div>
+
+        {/* Contact — mobile only, below carousel */}
+        <div className="container-edge mt-4 pb-16">
+          <div className="hairline mb-8" />
+          <div className="mb-1 font-mono text-xs uppercase tracking-[0.16em] text-muted">
+            Contact
+          </div>
+          <button
+            onClick={handleMobileCopy}
+            className="font-body text-sm text-foreground transition-colors duration-300 hover:text-muted"
+          >
+            {mobileCopied ? "Email copied!" : "dhar2017.slg@gmail.com"}
+          </button>
+        </div>
       </div>
     </section>
   );
 }
-
-
-
-

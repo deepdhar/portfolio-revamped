@@ -88,4 +88,4 @@ Then in `data/projects.ts`, set `mediaReady: true` on that project's entry so th
 - **Projects**: `data/projects.ts`
 - **Hero copy**: `components/hero/Hero.tsx`
 - **About statement**: `components/about/About.tsx`
-- **Contact email**: search for `hello@deepdhar.dev` in `components/navigation/Navigation.tsx` and `components/contact/Contact.tsx`
+- **Contact email**: search for `dhar2017.slg@gmail.com` in `components/navigation/Navigation.tsx` and `components/contact/Contact.tsx`

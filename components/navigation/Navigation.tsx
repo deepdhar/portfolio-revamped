@@ -30,7 +30,7 @@ export function Navigation() {
 
   function handleCopyEmail(e: React.MouseEvent) {
     e.preventDefault();
-    navigator.clipboard?.writeText("hello@deepdhar.dev").catch(() => {});
+    navigator.clipboard?.writeText("dhar2017.slg@gmail.com").catch(() => { });
     setCopied(true);
     setTimeout(() => setCopied(false), 1800);
   }
@@ -38,9 +38,8 @@ export function Navigation() {
   return (
     <nav
       ref={navRef}
-      className={`fixed inset-x-0 top-0 z-50 flex h-[var(--nav-height)] items-center justify-between border-b transition-colors duration-500 ${
-        scrolled ? "border-border bg-background/85 backdrop-blur-md" : "border-transparent"
-      } container-edge`}
+      className={`fixed inset-x-0 top-0 z-50 flex h-[var(--nav-height)] items-center justify-between border-b transition-colors duration-500 ${scrolled ? "border-border bg-background/85 backdrop-blur-md" : "border-transparent"
+        } container-edge`}
     >
       <Link
         href="/"

@@ -9,19 +9,28 @@ import { projects } from "@/data/projects";
 const REPEAT = 5;
 const items = Array.from({ length: REPEAT }, () => projects).flat();
 
-export function InfiniteStrip({ onActiveChange }: { onActiveChange?: (slug: string) => void }) {
+export function InfiniteStrip({
+  onActiveChange,
+  onHoverChange,
+}: {
+  onActiveChange?: (slug: string) => void;
+  onHoverChange?: (hovering: boolean) => void;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>(0);
 
   // Scroll state managed in refs (no React re-renders during animation)
-  const scrollY = useRef(0);          // current rendered scroll position
-  const targetY = useRef(0);          // destination (from wheel events)
-  const velocity = useRef(0);         // smoothed velocity for distortion
+  const scrollY = useRef(0);
+  const targetY = useRef(0);
+  const velocity = useRef(0);
+  const mouseY = useRef<number | null>(null); // current cursor Y in viewport coords
   const lastActiveSlug = useRef<string | null>(null);
+  const isHovering = useRef(false); // only report active while cursor is over strip
 
   const reportActive = useCallback(
     (slug: string) => {
+      if (!isHovering.current) return; // gate: only highlight during hover
       if (slug !== lastActiveSlug.current) {
         lastActiveSlug.current = slug;
         onActiveChange?.(slug);
@@ -50,6 +59,24 @@ export function InfiniteStrip({ onActiveChange }: { onActiveChange?: (slug: stri
     };
     container.addEventListener("wheel", onWheel, { passive: false });
 
+    // ── Hover tracking
+    const onEnter = () => {
+      isHovering.current = true;
+      onHoverChange?.(true);
+    };
+    const onLeave = () => {
+      isHovering.current = false;
+      mouseY.current = null;
+      onHoverChange?.(false);
+      lastActiveSlug.current = null; // reset so re-entry re-fires
+    };
+    const onMouseMove = (e: PointerEvent) => {
+      mouseY.current = e.clientY;
+    };
+    container.addEventListener("mouseenter", onEnter);
+    container.addEventListener("mouseleave", onLeave);
+    container.addEventListener("pointermove", onMouseMove, { passive: true });
+
     // ── rAF loop
     function tick() {
       rafRef.current = requestAnimationFrame(tick);
@@ -62,11 +89,11 @@ export function InfiniteStrip({ onActiveChange }: { onActiveChange?: (slug: stri
       const prev = scrollY.current;
       scrollY.current += (targetY.current - scrollY.current) * 0.085;
 
-      // Compute raw velocity (px/frame) then smooth it
+      // Compute raw velocity then smooth it
       const rawVel = scrollY.current - prev;
       velocity.current = velocity.current * 0.75 + rawVel * 0.25;
 
-      // ── Infinite loop seam — shift when nearing either edge
+      // ── Infinite loop seam
       if (scrollY.current > pageH * (REPEAT - 2)) {
         scrollY.current -= pageH;
         targetY.current -= pageH;
@@ -82,7 +109,6 @@ export function InfiniteStrip({ onActiveChange }: { onActiveChange?: (slug: stri
       const containerH = container.clientHeight;
       const containerCenter = containerH / 2;
       const absVel = Math.abs(velocity.current);
-      // normalise: max visible deform at ~20px/frame scroll speed
       const velNorm = Math.min(absVel / 18, 1);
 
       const cards = inner.querySelectorAll<HTMLElement>("[data-strip-card]");
@@ -95,17 +121,13 @@ export function InfiniteStrip({ onActiveChange }: { onActiveChange?: (slug: stri
         const distFromCenter = cardCenter - containerCenter;
         const absDistNorm = Math.min(Math.abs(distFromCenter) / containerCenter, 1);
 
-        // Combined factor: edge position × velocity
         const shrink = absDistNorm * velNorm * 0.35;
         const scaleX = 1 - shrink;
-
-        // Border radius grows as card compresses — pill effect at edges
         const radius = shrink * 60;
 
         card.style.transform = `scaleX(${scaleX.toFixed(4)})`;
         card.style.borderRadius = `${radius.toFixed(1)}px`;
 
-        // Track which card is closest to center (for index highlight)
         const d = Math.abs(distFromCenter);
         if (d < closestDist) {
           closestDist = d;
@@ -113,7 +135,17 @@ export function InfiniteStrip({ onActiveChange }: { onActiveChange?: (slug: stri
         }
       });
 
-      if (closestSlug) reportActive(closestSlug);
+      // Prefer the card the mouse is physically over; fall back to center card.
+      let activeSlug = closestSlug;
+      if (mouseY.current !== null) {
+        cards.forEach((card) => {
+          const rect = card.getBoundingClientRect();
+          if (mouseY.current! >= rect.top && mouseY.current! <= rect.bottom) {
+            activeSlug = card.dataset.slug ?? "";
+          }
+        });
+      }
+      if (activeSlug) reportActive(activeSlug);
     }
 
     rafRef.current = requestAnimationFrame(tick);
@@ -121,8 +153,11 @@ export function InfiniteStrip({ onActiveChange }: { onActiveChange?: (slug: stri
     return () => {
       cancelAnimationFrame(rafRef.current);
       container.removeEventListener("wheel", onWheel);
+      container.removeEventListener("mouseenter", onEnter);
+      container.removeEventListener("mouseleave", onLeave);
+      container.removeEventListener("pointermove", onMouseMove);
     };
-  }, [reportActive]);
+  }, [reportActive, onHoverChange]);
 
   return (
     <div
@@ -133,7 +168,6 @@ export function InfiniteStrip({ onActiveChange }: { onActiveChange?: (slug: stri
       {/* ── The inner strip — positioned absolutely so translateY drives it ── */}
       <div ref={innerRef} className="absolute top-0 left-0 w-full will-change-transform">
         {items.map((project, i) => {
-          // Vary heights for a editorial look (mirrors segerman.dev's mix of tall/short crops)
           const heights = ["h-[300px]", "h-[380px]", "h-[260px]", "h-[340px]"];
           const h = heights[i % heights.length];
 
@@ -142,7 +176,7 @@ export function InfiniteStrip({ onActiveChange }: { onActiveChange?: (slug: stri
               key={`${project.slug}-${i}`}
               data-strip-card
               data-slug={project.slug}
-              className={`w-full px-6 py-2 will-change-transform`}
+              className="w-full px-6 py-2 will-change-transform"
               style={{ transformOrigin: "center center" }}
             >
               <Link
@@ -158,7 +192,6 @@ export function InfiniteStrip({ onActiveChange }: { onActiveChange?: (slug: stri
                   className="object-cover grayscale transition-[filter,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:grayscale-0 group-hover:scale-[1.04]"
                   priority={i < projects.length}
                 />
-                {/* Subtle dark veil on hover */}
                 <div className="absolute inset-0 bg-foreground/0 transition-colors duration-500 group-hover:bg-foreground/5" />
               </Link>
             </div>
@@ -166,11 +199,15 @@ export function InfiniteStrip({ onActiveChange }: { onActiveChange?: (slug: stri
         })}
       </div>
 
-      {/* Soft top/bottom fade masks — accentuate the barrel effect visually */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-32 z-10"
-           style={{ background: "linear-gradient(to bottom, var(--background) 0%, transparent 100%)" }} />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 z-10"
-           style={{ background: "linear-gradient(to top, var(--background) 0%, transparent 100%)" }} />
+      {/* Soft top/bottom fade masks */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-32 z-10"
+        style={{ background: "linear-gradient(to bottom, var(--background) 0%, transparent 100%)" }}
+      />
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-32 z-10"
+        style={{ background: "linear-gradient(to top, var(--background) 0%, transparent 100%)" }}
+      />
     </div>
   );
 }

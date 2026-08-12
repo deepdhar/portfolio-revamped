@@ -54,6 +54,22 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  cursor: default;
+}
+
+/* Force all descendants to inherit cursor — prevents browser auto-applying
+   the I-beam text cursor over selectable text nodes. */
+* {
+  cursor: inherit;
+}
+
+/* Interactive elements restore meaningful cursors. */
+a, button, [role="button"], label, summary {
+  cursor: pointer;
+}
+
+input, textarea {
+  cursor: text;
 }
 
 ::selection {

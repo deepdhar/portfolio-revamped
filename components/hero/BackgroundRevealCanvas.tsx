@@ -67,6 +67,13 @@ export function BackgroundRevealCanvas({ imageSrc }: { imageSrc: string }) {
     };
     window.addEventListener("pointermove", onMove, { passive: true });
 
+    // Touch: also trail on touchmove for mobile blob reveal on scroll
+    const onTouch = (e: TouchEvent) => {
+      const t = e.touches[0];
+      if (t) points.push({ x: t.clientX, y: t.clientY, born: performance.now() });
+    };
+    window.addEventListener("touchmove", onTouch, { passive: true });
+
     let raf: number;
     function render() {
       raf = requestAnimationFrame(render);
@@ -110,6 +117,7 @@ export function BackgroundRevealCanvas({ imageSrc }: { imageSrc: string }) {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("touchmove", onTouch);
       window.removeEventListener("resize", resize);
       themeObserver.disconnect();
     };
