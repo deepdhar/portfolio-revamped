@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { splitTextReveal, fadeIn } from "@/lib/animations/helpers";
 import { IndexList } from "@/components/projects/IndexList";
-import { ImageStack } from "@/components/projects/ImageStack";
+import { InfiniteStrip } from "@/components/projects/InfiniteStrip";
 import { HeroFooter } from "@/components/hero/HeroFooter";
 import { projects } from "@/data/projects";
 
@@ -56,7 +56,7 @@ export function Hero() {
             ref={headlineRef}
             className="max-w-xl font-display text-display-1 font-black uppercase text-foreground"
           >
-            Senior Developer
+            Deep Dhar
           </h1>
 
           <p
@@ -75,9 +75,9 @@ export function Hero() {
         <HeroFooter />
       </div>
 
-      {/* Right column: stacked project imagery, scrolls independently on desktop */}
-      <div data-scroll-root className="lg:h-[100svh] lg:overflow-y-auto">
-        <ImageStack onActiveChange={setActiveSlug} />
+      {/* Right column: infinite scrolling strip with velocity-based barrel distortion */}
+      <div className="hidden lg:block">
+        <InfiniteStrip onActiveChange={setActiveSlug} />
       </div>
     </section>
   );

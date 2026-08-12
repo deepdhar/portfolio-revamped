@@ -156,12 +156,8 @@ export function ScratchReveal({
         className="pointer-events-none fixed inset-0 z-[2]"
       />
 
-      {/* ── All page content — sits above the canvas so it is always visible ── */}
-      {/* z-[3] creates a stacking context above the fixed canvas at z-[2].
-          Navigation is already at z-50, safely above everything. */}
-      <div className="relative z-[3]">
-        {children}
-      </div>
+      {/* ── All page content — rendered in normal flow inside <main z-[10]> ── */}
+      {children}
     </>
   );
 }

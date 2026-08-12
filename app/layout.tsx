@@ -4,6 +4,7 @@ import "./globals.css";
 import { SmoothScrollProvider } from "@/components/transitions/SmoothScrollProvider";
 import { Preloader } from "@/components/transitions/Preloader";
 import { Navigation } from "@/components/navigation/Navigation";
+import { BackgroundRevealCanvas } from "@/components/hero/BackgroundRevealCanvas";
 
 const display = Archivo({
   subsets: ["latin"],
@@ -65,11 +66,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
+        {/* Fixed background layers — in root stacking context BEFORE <main>.
+            image: z-[1], canvas: z-[2] — both below <main z-[10]>. */}
+        <BackgroundRevealCanvas imageSrc="https://images.unsplash.com/photo-1754548930550-be9fa88874f4?w=1920&q=85&auto=format&fit=crop" />
         <div className="noise-overlay" />
         <Preloader />
         <SmoothScrollProvider>
           <Navigation />
-          <main id="page-content">{children}</main>
+          <main id="page-content" className="relative z-[10]">{children}</main>
         </SmoothScrollProvider>
       </body>
     </html>
