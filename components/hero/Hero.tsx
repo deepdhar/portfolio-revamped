@@ -12,7 +12,6 @@ import { projects } from "@/data/projects";
 
 export function Hero() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
-  const metaRef = useRef<HTMLDivElement>(null);
   const roleRef = useRef<HTMLParagraphElement>(null);
   const indexRef = useRef<HTMLDivElement>(null);
   const [activeSlug, setActiveSlug] = useState<string | undefined>(projects[0]?.slug);
@@ -31,7 +30,6 @@ export function Hero() {
     const alreadyPlayed = sessionStorage.getItem(STORAGE_KEY);
 
     if (alreadyPlayed) {
-      if (metaRef.current) gsap.set(metaRef.current, { opacity: 1, y: 0 });
       if (roleRef.current) gsap.set(roleRef.current, { opacity: 1, y: 0 });
       if (indexRef.current) gsap.set(indexRef.current, { opacity: 1, y: 0 });
       if (headlineRef.current) gsap.set(headlineRef.current, { opacity: 1 });
@@ -44,7 +42,7 @@ export function Hero() {
       onComplete: () => sessionStorage.setItem(STORAGE_KEY, "true"),
     });
 
-    if (metaRef.current) tl.add(fadeIn(metaRef.current, { d: 0.6 }), 0);
+
     if (headlineRef.current) tl.add(splitTextReveal(headlineRef.current, { delay: 0 }), 0.1);
     if (roleRef.current) tl.add(fadeIn(roleRef.current, { d: 0.7 }), 0.55);
     if (indexRef.current) tl.add(fadeIn(indexRef.current, { d: 0.7 }), 0.75);
@@ -55,25 +53,15 @@ export function Hero() {
   return (
     <section id="top" className="grid grid-cols-1 lg:grid-cols-2">
       {/* ── Left column: identity, headline, index, footer ── */}
-      <div className="container-edge flex flex-col justify-between pb-16 pt-[calc(var(--nav-height)+2.5rem)] lg:min-h-[100svh] lg:pb-12">
+      <div className="container-edge flex flex-col justify-between pb-16 pt-[calc(var(--nav-height)+0.5rem)] lg:min-h-[100svh] lg:pb-12">
         <div>
-          {/* "Available for select engagements" — desktop only */}
-          <div
-            ref={metaRef}
-            className="mb-6 hidden items-center gap-2 font-mono text-xs uppercase tracking-[0.14em] text-muted lg:flex"
-          >
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-50" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
-            </span>
-            Available for select engagements
-          </div>
-
           <h1
             ref={headlineRef}
             className="max-w-xl font-display text-display-1 font-black uppercase text-foreground"
           >
-            Deep Dhar
+            Frontend
+            <br />
+            Developer
           </h1>
 
           <p

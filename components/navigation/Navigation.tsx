@@ -43,14 +43,14 @@ export function Navigation() {
     >
       <Link
         href="/"
-        className="font-mono text-xs uppercase tracking-[0.14em] text-foreground"
+        className="font-body text-[16px] font-medium text-foreground"
         data-cursor="link"
       >
         Deep&nbsp;Dhar
       </Link>
 
       <div className="flex items-center gap-6">
-        <div className="flex items-center gap-1 font-mono text-xs uppercase tracking-[0.1em] text-muted">
+        <div className="flex items-center gap-1 font-body text-sm font-medium text-muted">
           <Link
             href="/info"
             className="transition-colors duration-300 hover:text-foreground"
