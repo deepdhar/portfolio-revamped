@@ -439,7 +439,7 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
               fontVariantNumeric: "tabular-nums",
             }}
           >
-            {String(progress).padStart(3, "0")}
+            {progress}
           </span>
           <span
             style={{
