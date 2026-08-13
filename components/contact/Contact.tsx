@@ -40,10 +40,10 @@ export function Contact() {
       <div className="mt-24 flex flex-col justify-between gap-6 border-t border-border pt-8 font-mono text-xs uppercase tracking-[0.12em] text-muted sm:flex-row sm:items-center">
         <span>© {new Date().getFullYear()} Deep Dhar</span>
         <div className="flex gap-6">
-          <a href="https://github.com" target="_blank" rel="noreferrer" data-cursor="link" className="hover:text-foreground">
+          <a href="https://github.com/deepdhar" target="_blank" rel="noreferrer" data-cursor="link" className="hover:text-foreground">
             GitHub
           </a>
-          <a href="https://linkedin.com" target="_blank" rel="noreferrer" data-cursor="link" className="hover:text-foreground">
+          <a href="https://linkedin.com/in/deep-dhar" target="_blank" rel="noreferrer" data-cursor="link" className="hover:text-foreground">
             LinkedIn
           </a>
         </div>
