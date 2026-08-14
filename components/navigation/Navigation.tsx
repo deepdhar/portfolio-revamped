@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -9,6 +10,7 @@ export function Navigation() {
   const navRef = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [copied, setCopied] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     let lastY = window.scrollY;
@@ -53,7 +55,7 @@ export function Navigation() {
         <div className="flex items-center gap-1 font-body text-sm font-medium text-muted">
           <Link
             href="/info"
-            className="transition-colors duration-300 hover:text-foreground"
+            className={`transition-colors duration-300 hover:text-foreground ${pathname === "/info" ? "text-foreground underline underline-offset-4 decoration-1" : ""}`}
             data-cursor="link"
           >
             Info
