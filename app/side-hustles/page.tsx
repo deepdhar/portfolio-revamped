@@ -83,23 +83,19 @@ export default function SideHustlesPage() {
   }, []);
 
   return (
-    <div
-      data-theme="dark"
-      className="side-hustles-page min-h-screen"
-      style={{ background: "#0c0c0a", color: "#f2f0ea" }}
-    >
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
       <div className="container-edge pt-[calc(var(--nav-height)+2rem)] pb-12">
         <Link
           href="/"
           data-cursor="link"
-          className="inline-block font-mono text-xs uppercase tracking-[0.14em] text-[#8a887f] transition-colors hover:text-[#f2f0ea]"
+          className="inline-block font-mono text-xs uppercase tracking-[0.14em] text-muted transition-colors hover:text-foreground"
         >
           ← Index
         </Link>
 
         <h1
-          className="mt-8 font-display font-black uppercase text-[#f2f0ea]"
+          className="mt-8 font-display font-black uppercase text-foreground"
           style={{
             fontSize: "clamp(2.5rem, 7vw, 5rem)",
             lineHeight: 0.94,
@@ -108,7 +104,7 @@ export default function SideHustlesPage() {
         >
           Side Hustles
         </h1>
-        <p className="mt-4 max-w-lg font-body text-base leading-relaxed text-[#8a887f]">
+        <p className="mt-4 max-w-lg font-body text-base leading-relaxed text-muted">
           Personal projects and experiments — built for learning, curiosity, and
           the joy of shipping.
         </p>
@@ -121,7 +117,7 @@ export default function SideHustlesPage() {
           ref={timelineRef}
           className="absolute left-1/2 top-0 bottom-0 hidden w-[2px] -translate-x-1/2 sm:block"
           style={{
-            background: "linear-gradient(to bottom, #1788ae, #1788ae80)",
+            background: "linear-gradient(to bottom, var(--accent), color-mix(in srgb, var(--accent) 50%, transparent))",
             transformOrigin: "top center",
           }}
         />
@@ -145,10 +141,9 @@ export default function SideHustlesPage() {
                   className="absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 sm:block"
                 >
                   <div
-                    className="h-4 w-4 rounded-full border-[3px]"
+                    className="h-4 w-4 rounded-full border-[3px] bg-background"
                     style={{
                       borderColor: hustle.color,
-                      background: "#0c0c0a",
                     }}
                   />
                 </div>
@@ -239,7 +234,7 @@ export default function SideHustlesPage() {
                     >
                       ({hustle.subtitle})
                     </span>
-                    <p className="mt-2 text-sm leading-relaxed text-[#c8c6be] md:text-base">
+                    <p className="mt-2 text-sm leading-relaxed text-foreground/80 md:text-base">
                       {hustle.description}
                     </p>
 
@@ -247,7 +242,7 @@ export default function SideHustlesPage() {
                       {hustle.technologies.map((tech) => (
                         <li
                           key={tech}
-                          className="rounded-full border border-[#555] px-[10px] py-[5px] font-mono text-xs text-[#c8c6be]"
+                          className="rounded-full border border-border px-[10px] py-[5px] font-mono text-xs text-muted"
                         >
                           #{tech}
                         </li>
@@ -262,11 +257,11 @@ export default function SideHustlesPage() {
       </div>
 
       {/* Footer */}
-      <div className="container-edge border-t border-[#24241f] py-10">
+      <div className="container-edge border-t border-border py-10">
         <Link
           href="/"
           data-cursor="link"
-          className="font-mono text-xs uppercase tracking-wider text-[#8a887f] transition-colors hover:text-[#f2f0ea]"
+          className="font-mono text-xs uppercase tracking-wider text-muted transition-colors hover:text-foreground"
         >
           ← Back to Index
         </Link>

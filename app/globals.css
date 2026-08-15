@@ -145,16 +145,6 @@ button:focus-visible,
   }
 }
 
-/* ── Side Hustles page — force dark-theme variables inside the page scope ── */
-.side-hustles-page {
-  --background: #0c0c0a;
-  --foreground: #f2f0ea;
-  --muted: #8a887f;
-  --border: #24241f;
-  --accent: #6c7bff;
-  --surface: #16160f;
-}
-
 /* ── Work page — image greyscale removal on scroll into view ── */
 [data-work-right] img.grayscale {
   filter: grayscale(1);
