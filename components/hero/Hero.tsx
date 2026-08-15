@@ -59,17 +59,17 @@ export function Hero() {
             ref={headlineRef}
             className="max-w-xl font-display text-display-1 font-black uppercase text-foreground"
           >
-            Frontend
+            Software
             <br />
-            Developer
+            Engineer
           </h1>
 
           <p
             ref={roleRef}
             className="mt-6 max-w-sm font-body text-base leading-relaxed text-muted sm:text-lg"
           >
-            Building fast, intelligent products with more engineering underneath
-            than the surface shows.
+            I design and build software that feels intuitive and works reliably.
+            I focus on systems that stay fast as they grow, and on integrating intelligence without adding unnecessary complexity.
           </p>
         </div>
 

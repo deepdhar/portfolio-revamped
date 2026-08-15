@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { projects } from "@/data/projects";
 
+const MAX_VISIBLE = 4;
+
 /**
  * Shows the project index list.
  * - When `hovering` is false (default): all names are dark/foreground — equally prominent.
  * - When `hovering` is true (mouse is over the InfiniteStrip): the active (centred)
  *   project is bold/dark and the rest dim to muted.
+ *
+ * When there are more than 4 projects, a "View All →" link is shown.
  */
 export function IndexList({
   activeSlug,
@@ -14,13 +18,16 @@ export function IndexList({
   activeSlug?: string;
   hovering?: boolean;
 }) {
+  const visibleProjects = projects.slice(0, MAX_VISIBLE);
+  const hasMore = projects.length > MAX_VISIBLE;
+
   return (
     <div className="text-right">
       <div className="mb-4 font-mono text-xs uppercase tracking-[0.16em] text-muted">
         Index
       </div>
       <ul className="flex flex-col gap-2">
-        {projects.map((project) => {
+        {visibleProjects.map((project) => {
           const isActive = project.slug === activeSlug;
 
           // When not hovering: every item is dark + normal weight (equally visible).
@@ -46,6 +53,16 @@ export function IndexList({
           );
         })}
       </ul>
+
+      {hasMore && (
+        <Link
+          href="/work"
+          data-cursor="link"
+          className="mt-4 inline-block font-body text-sm text-muted transition-colors duration-300 hover:text-foreground"
+        >
+          View All →
+        </Link>
+      )}
     </div>
   );
 }

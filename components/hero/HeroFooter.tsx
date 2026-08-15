@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 export function HeroFooter() {
   const [copied, setCopied] = useState(false);
@@ -24,6 +25,19 @@ export function HeroFooter() {
         >
           {copied ? "Email copied!" : "dhar2017.slg@gmail.com"}
         </button>
+      </div>
+
+      <div>
+        <div className="mb-2 font-mono text-xs uppercase tracking-[0.16em] text-muted">
+          Side Hustles
+        </div>
+        <Link
+          href="/side-hustles"
+          data-cursor="link"
+          className="font-body text-sm text-foreground transition-colors duration-300 hover:text-muted"
+        >
+          View Projects →
+        </Link>
       </div>
 
       <div>
