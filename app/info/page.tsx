@@ -5,7 +5,7 @@ import { Contact } from "@/components/contact/Contact";
 
 export const metadata: Metadata = {
   title: "Info — Deep Dhar",
-  description: "About Deep Dhar — Senior Software Developer. Experience, focus, and background.",
+  description: "About Deep Dhar — Software Engineer. Experience, focus, and background.",
 };
 
 export default function InfoPage() {

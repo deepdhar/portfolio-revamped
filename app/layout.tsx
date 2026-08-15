@@ -28,12 +28,12 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Deep Dhar — Senior Software Developer",
+  title: "Deep Dhar — Software Engineer",
   description:
-    "Senior Software Developer crafting fast, intelligent and expressive digital experiences. Frontend architecture, full-stack systems, and AI-assisted development.",
+    "Software Engineer crafting fast, intelligent and expressive digital experiences. Frontend architecture, full-stack systems, and AI-assisted development.",
   metadataBase: new URL("https://deepdhar.dev"),
   openGraph: {
-    title: "Deep Dhar — Senior Software Developer",
+    title: "Deep Dhar — Software Engineer",
     description:
       "Frontend architecture, full-stack systems, and AI-assisted development.",
     url: "https://deepdhar.dev",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Deep Dhar — Senior Software Developer",
+    title: "Deep Dhar — Software Engineer",
     description:
       "Frontend architecture, full-stack systems, and AI-assisted development.",
   },
