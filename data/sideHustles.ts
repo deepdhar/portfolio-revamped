@@ -36,7 +36,8 @@ export const sideHustles: SideHustle[] = [
       "figma",
     ],
     image: "/media/side-hustles/quizzo.webp",
-    liveUrl: "https://github.com/deepdhar/Quizzo",
+    liveUrl:
+      "https://play.google.com/store/apps/details?id=com.deepdhar.quizzo",
     color: "#2e9d8f",
   },
   {
@@ -58,6 +59,27 @@ export const sideHustles: SideHustle[] = [
     ],
     image: "/media/side-hustles/task.webp",
     liveUrl: "https://expo.dev/artifacts/eas/9pTawagwBKdqYcHG8a4uZH.apk",
+    color: "#f1febc",
+  },
+  {
+    slug: "vaccine-tracker",
+    title: "Vaccine Tracker",
+    subtitle: "Vaccine Tracker App",
+    description:
+      "Vaccine Tracker is a helpful app that keeps track of your vaccine records and reminds you when it's time for your next shot. It also keeps track of your kids vaccine record and reminds you when it's time for their next shot. (Made during COVID-19 Pandemic)",
+    technologies: [
+      "react-native",
+      "tailwind",
+      "typescript",
+      "css",
+      "nodejs",
+      "mongo",
+      "express",
+      "react-native-paper",
+      "expo",
+    ],
+    image: "/media/side-hustles/vaccine.png",
+    liveUrl: "https://github.com/deepdhar/Vaccine-Tracker-App",
     color: "#f1febc",
   },
   {
