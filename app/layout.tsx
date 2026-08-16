@@ -32,6 +32,10 @@ export const metadata: Metadata = {
   description:
     "Software Engineer crafting fast, intelligent and expressive digital experiences. Frontend architecture, full-stack systems, and AI-assisted development.",
   metadataBase: new URL("https://deepdhar.dev"),
+  icons: {
+    icon: "/favicon.jpg",
+    apple: "/favicon.jpg",
+  },
   openGraph: {
     title: "Deep Dhar — Software Engineer",
     description:
@@ -39,12 +43,14 @@ export const metadata: Metadata = {
     url: "https://deepdhar.dev",
     siteName: "Deep Dhar",
     type: "website",
+    images: [{ url: "/favicon.jpg" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Deep Dhar — Software Engineer",
     description:
       "Frontend architecture, full-stack systems, and AI-assisted development.",
+    images: ["/favicon.jpg"],
   },
 };
 
