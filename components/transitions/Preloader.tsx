@@ -85,11 +85,13 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
             onComplete: () => {
               setDone(true);
               onComplete?.();
+              document.dispatchEvent(new CustomEvent("preloader:done"));
             },
           });
         } else {
           setDone(true);
           onComplete?.();
+          document.dispatchEvent(new CustomEvent("preloader:done"));
         }
       },
     });

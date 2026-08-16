@@ -10,14 +10,25 @@ import { InfiniteStrip } from "@/components/projects/InfiniteStrip";
 import { HeroFooter } from "@/components/hero/HeroFooter";
 import { projects } from "@/data/projects";
 
+const STORAGE_KEY = "hero-intro-done";
+
 export function Hero() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
+  const headlineLine1Ref = useRef<HTMLSpanElement>(null);
+  const headlineLine2Ref = useRef<HTMLSpanElement>(null);
   const roleRef = useRef<HTMLParagraphElement>(null);
   const indexRef = useRef<HTMLDivElement>(null);
   const [activeSlug, setActiveSlug] = useState<string | undefined>(projects[0]?.slug);
   const [stripHovered, setStripHovered] = useState(false);
   // Mobile contact copy state (separate from desktop HeroFooter)
   const [mobileCopied, setMobileCopied] = useState(false);
+
+  // Read sessionStorage synchronously at render time so the initial opacity
+  // is correct before the very first paint — avoids any flash of visible text.
+  const [alreadyPlayed] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return !!sessionStorage.getItem(STORAGE_KEY);
+  });
 
   function handleMobileCopy() {
     navigator.clipboard?.writeText("dhar2017.slg@gmail.com").catch(() => { });
@@ -26,29 +37,34 @@ export function Hero() {
   }
 
   useEffect(() => {
-    const STORAGE_KEY = "hero-intro-done";
-    const alreadyPlayed = sessionStorage.getItem(STORAGE_KEY);
+    if (alreadyPlayed) return; // elements already visible via inline style
 
-    if (alreadyPlayed) {
-      if (roleRef.current) gsap.set(roleRef.current, { opacity: 1, y: 0 });
-      if (indexRef.current) gsap.set(indexRef.current, { opacity: 1, y: 0 });
-      if (headlineRef.current) gsap.set(headlineRef.current, { opacity: 1 });
-      return;
+    function runIntro() {
+      const tl = gsap.timeline({
+        defaults: { ease: "expo.out" },
+        onComplete: () => sessionStorage.setItem(STORAGE_KEY, "true"),
+      });
+
+      if (headlineRef.current) {
+        tl.to(headlineRef.current, { opacity: 1, duration: 0.01 }, 0);
+      }
+      // Animate each line independently so the <br /> layout is preserved
+      if (headlineLine1Ref.current) {
+        tl.add(splitTextReveal(headlineLine1Ref.current, { delay: 0 }), 0);
+      }
+      if (headlineLine2Ref.current) {
+        tl.add(splitTextReveal(headlineLine2Ref.current, { delay: 0 }), 0.08);
+      }
+      if (roleRef.current) tl.add(fadeIn(roleRef.current, { d: 0.7 }), 0.45);
+      if (indexRef.current) tl.add(fadeIn(indexRef.current, { d: 0.7 }), 0.65);
     }
 
-    const tl = gsap.timeline({
-      defaults: { ease: "expo.out" },
-      delay: 1.9,
-      onComplete: () => sessionStorage.setItem(STORAGE_KEY, "true"),
-    });
+    document.addEventListener("preloader:done", runIntro, { once: true });
 
-
-    if (headlineRef.current) tl.add(splitTextReveal(headlineRef.current, { delay: 0 }), 0.1);
-    if (roleRef.current) tl.add(fadeIn(roleRef.current, { d: 0.7 }), 0.55);
-    if (indexRef.current) tl.add(fadeIn(indexRef.current, { d: 0.7 }), 0.75);
-
-    return () => { tl.kill(); };
-  }, []);
+    return () => {
+      document.removeEventListener("preloader:done", runIntro);
+    };
+  }, [alreadyPlayed]);
 
   return (
     <section id="top" className="grid grid-cols-1 lg:grid-cols-2">
@@ -58,15 +74,17 @@ export function Hero() {
           <h1
             ref={headlineRef}
             className="max-w-xl font-display text-display-1 font-black uppercase text-foreground"
+            style={alreadyPlayed ? undefined : { opacity: 0 }}
           >
-            Software
-            <br />
-            Engineer
+            {/* Each word is its own block span so splitTextReveal reads clean textContent per line */}
+            <span ref={headlineLine1Ref} className="block">Software</span>
+            <span ref={headlineLine2Ref} className="block">Engineer</span>
           </h1>
 
           <p
             ref={roleRef}
             className="mt-6 max-w-sm font-body text-base leading-relaxed text-muted sm:text-lg"
+            style={alreadyPlayed ? undefined : { opacity: 0 }}
           >
             I design and build software that feels intuitive and works reliably.
             I focus on systems that stay fast as they grow, and on integrating intelligence without adding unnecessary complexity.
@@ -74,7 +92,7 @@ export function Hero() {
         </div>
 
         {/* Index list — desktop only */}
-        <div ref={indexRef} className="mt-20 hidden lg:block lg:mt-0">
+        <div ref={indexRef} className="mt-20 hidden lg:block lg:mt-0" style={alreadyPlayed ? undefined : { opacity: 0 }}>
           <IndexList activeSlug={activeSlug} hovering={stripHovered} />
         </div>
 
