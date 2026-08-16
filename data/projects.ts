@@ -27,6 +27,7 @@ export const projects: Project[] = [
     title: "Doreme",
     year: "2025",
     role: "Full-Stack Developer",
+    liveUrl: "https://doreme.in",
     description:
       "Doreme is a homegrown clothing brand for which the e-commerce platform was built from scratch using Next.js, TypeScript, and Shopify. Developed and launched the complete web storefront, integrating Shopify for product, inventory, and commerce operations. Scaled the platform to support ₹250Cr in business turnover and delivered the brand’s mobile application using Expo and React Native, extending the shopping experience across web and mobile.",
     technologies: ["Next.js", "TypeScript", "Shopify", "Expo", "React Native"],
@@ -40,6 +41,7 @@ export const projects: Project[] = [
     title: "Mobily",
     year: "2026",
     role: "Frontend Engineer",
+    liveUrl: "https://www.mobily.com.sa/",
     description:
       "Mobily, a leading Middle Eastern telecom provider, underwent a frontend revamp of its React, TypeScript, and Micro Frontend-based web portal. Shipped 2 MFE shells and major portal features, improving application responsiveness and performance through modern frontend practices. Automated post-integration test execution and addressed issues identified through test reports, while also shipping features for the React Native mobile app.",
     technologies: ["React", "React Native", "Micro Frontend", "TypeScript"],
@@ -53,6 +55,7 @@ export const projects: Project[] = [
     title: "Biter",
     year: "2025",
     role: "Mobile Developer",
+    liveUrl: "https://biterapp.com/",
     description:
       "Biter is a restaurant discovery platform that helps users find and rate nearby restaurants and cafés through a live map, community reviews, and Biter ratings. Led the mobile application revamp and development independently using React Native, shipping features rapidly across discovery, maps, reviews, and user experiences. Increased user acquisition by 450% and helped achieve a 4.5-star rating at launch through a faster, more stable, and polished mobile experience.",
     technologies: [
@@ -71,6 +74,7 @@ export const projects: Project[] = [
     title: "AI Fiesta",
     year: "2024",
     role: "Frontend Engineer",
+    liveUrl: "https://aifiesta.ai/",
     description:
       "AI Fiesta is a multi-model AI platform that brings leading AI models into a single interface, enabling users to compare and interact with different models from one place. Built its first mobile application using React Native and helped take the app from development to launch in just 2 weeks, delivering a fast and polished mobile experience under a tight timeline.",
     technologies: ["React Native", "Modular Architecture", "LLM Integrations"],
