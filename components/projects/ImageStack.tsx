@@ -69,14 +69,20 @@ export function ImageStack({
         >
           {/* Temporary stock cover photo (Unsplash, free-to-use license) — swap for your
               own project screenshot at public/media/work/<slug>/cover.jpg, see data/projects.ts */}
-          <Image
-            src={project.coverImage}
-            alt={project.title}
-            fill
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover grayscale transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
-            priority={i === 0}
-          />
+          {project.mediaReady === false ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-surface">
+              <span className="font-mono text-xs text-muted">image coming soon</span>
+            </div>
+          ) : (
+            <Image
+              src={project.coverImage}
+              alt={project.title}
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover grayscale transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+              priority={i === 0}
+            />
+          )}
           <div className="absolute inset-0 bg-foreground/0 transition-colors duration-500 group-hover:bg-foreground/10" />
         </Link>
       ))}

@@ -82,4 +82,20 @@ export const projects: Project[] = [
     mediaType: "image",
     coverImage: "/media/work/ai-fiesta/ai-fiesta.png",
   },
+  {
+    slug: "absli",
+    title: "Aditya Birla Sun Life",
+    year: "2023",
+    role: "Full-Stack Developer",
+    liveUrl: "https://lifeinsurance.adityabirlacapital.com/",
+    description:
+      "Aditya Birla Sun Life is a leading insurance company in India. Worked on the UI as well as backend development of 3 new insurance plans and handled live hotfixes with the client dev team, bringing down ticket sizes by 90% during peak business hours.",
+    technologies: ["React.js", "JavaScript", "Java", "SQL", "Spring", "HTML", "CSS"],
+    metric: "Reduced ticket sizes by 90% during peak hours",
+    // Drop your cover image at public/media/work/absli/absli.png when ready, then set mediaReady: true
+    mediaSrc: "/media/work/absli/absli.png",
+    mediaType: "image",
+    mediaReady: false,
+    coverImage: "/media/work/absli/absli.png",
+  },
 ];

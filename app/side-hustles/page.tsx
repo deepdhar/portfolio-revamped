@@ -143,7 +143,7 @@ export default function SideHustlesPage() {
                   <div
                     className="h-4 w-4 rounded-full border-[3px] bg-background"
                     style={{
-                      borderColor: hustle.color,
+                      borderColor: "var(--foreground)",
                     }}
                   />
                 </div>
@@ -152,10 +152,11 @@ export default function SideHustlesPage() {
                 <div
                   className="absolute top-1/2 hidden h-[1px] sm:block"
                   style={{
-                    background: hustle.color,
+                    background: "var(--foreground)",
+                    opacity: 0.25,
                     ...(isEven
-                      ? { right: "50%", left: "25%" }
-                      : { left: "50%", right: "25%" }),
+                      ? { right: "50%", left: "15%" }
+                      : { left: "50%", right: "15%" }),
                   }}
                 />
 
@@ -176,61 +177,61 @@ export default function SideHustlesPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       data-hustle-image
-                      className="group relative flex flex-col items-center"
+                      className="group relative flex flex-col items-center pt-5"
                     >
-                      <div
-                        className="relative max-w-[400px] overflow-hidden transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.12]"
-                        style={{
-                          filter: `drop-shadow(0 0 40px ${hustle.color}40)`,
-                        }}
-                      >
-                        <Image
-                          src={hustle.image}
-                          alt={hustle.title}
-                          width={500}
-                          height={350}
-                          className="h-auto w-full object-contain"
-                          style={{
-                            filter: `drop-shadow(0 0 60px ${hustle.color})`,
-                          }}
-                        />
+                      {/* Popping rectangular badge: sits behind image (z-0) at the top, pops out upward on hover */}
+                      <div className="pointer-events-none absolute top-5 left-1/2 z-0 -translate-x-1/2 translate-y-2 opacity-0 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-12 group-hover:opacity-100">
+                        <span className="flex items-center gap-1.5 whitespace-nowrap rounded-[5px] bg-white px-3.5 py-1.5 font-body text-xs font-semibold text-black shadow-lg shadow-black/30">
+                          {hustle.liveUrl?.includes("github.com") ? "View in GitHub" : "View Live"}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="13"
+                            height="13"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                            <polyline points="15 3 21 3 21 9" />
+                            <line x1="10" y1="14" x2="21" y2="3" />
+                          </svg>
+                        </span>
                       </div>
-                      {/* Floating label */}
-                      <span
-                        className="mt-2 flex items-center gap-1 rounded px-2 py-1 text-sm font-bold transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-2 sm:absolute sm:left-1/2 sm:top-4 sm:-translate-x-1/2 sm:mt-0"
-                        style={{ background: hustle.color, color: isLightColor(hustle.color) ? "#111" : "#fff" }}
-                      >
-                        {hustle.title}
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                          <polyline points="15 3 21 3 21 9" />
-                          <line x1="10" y1="14" x2="21" y2="3" />
-                        </svg>
-                      </span>
+
+                      {/* Image container: z-10 so badge emerges from behind it */}
+                      <div className="relative z-10 max-w-[400px] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]">
+                        {hustle.image ? (
+                          <Image
+                            src={hustle.image}
+                            alt={hustle.title}
+                            width={500}
+                            height={350}
+                            className="h-auto w-full object-contain"
+                          />
+                        ) : (
+                          <div
+                            className="flex h-[220px] w-[380px] items-center justify-center rounded-lg border border-border"
+                            style={{ background: "var(--surface)" }}
+                          >
+                            <span className="font-mono text-xs text-muted">image coming soon</span>
+                          </div>
+                        )}
+                      </div>
                     </a>
                   </div>
 
                   {/* Text content */}
                   <div data-hustle-content className="w-full">
                     <h3
-                      className="font-display text-2xl font-bold md:text-4xl"
-                      style={{ color: hustle.color }}
+                      className="font-display text-2xl font-bold text-foreground md:text-4xl"
                     >
                       {hustle.title}
                     </h3>
                     <span
-                      className="text-base md:text-lg"
-                      style={{ color: hustle.color }}
+                      className="text-base text-foreground/60 md:text-lg"
                     >
                       ({hustle.subtitle})
                     </span>

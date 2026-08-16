@@ -185,14 +185,20 @@ export function InfiniteStrip({
                 className={`group relative block w-full overflow-hidden bg-surface ${h}`}
                 tabIndex={-1}
               >
-                <Image
-                  src={project.coverImage}
-                  alt={project.title}
-                  fill
-                  sizes="50vw"
-                  className="object-cover grayscale transition-[filter,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:grayscale-0 group-hover:scale-[1.04]"
-                  priority={i < projects.length}
-                />
+                {project.mediaReady === false ? (
+                  <div className="absolute inset-0 flex items-center justify-center bg-surface">
+                    <span className="font-mono text-xs text-muted">image coming soon</span>
+                  </div>
+                ) : (
+                  <Image
+                    src={project.coverImage}
+                    alt={project.title}
+                    fill
+                    sizes="50vw"
+                    className="object-cover grayscale transition-[filter,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:grayscale-0 group-hover:scale-[1.04]"
+                    priority={i < projects.length}
+                  />
+                )}
                 <div className="absolute inset-0 bg-foreground/0 transition-colors duration-500 group-hover:bg-foreground/5" />
               </Link>
             </div>

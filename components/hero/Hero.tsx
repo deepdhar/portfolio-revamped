@@ -124,14 +124,20 @@ export function Hero() {
                 className="relative w-full overflow-hidden"
                 style={{ height: "64vw", maxHeight: 320 }}
               >
-                <Image
-                  src={project.coverImage}
-                  alt={project.title}
-                  fill
-                  sizes="100vw"
-                  className="object-cover grayscale transition-[filter,transform] duration-700 group-active:grayscale-0"
-                  priority={project.slug === projects[0]?.slug}
-                />
+                {project.mediaReady === false ? (
+                  <div className="flex h-full w-full items-center justify-center bg-surface">
+                    <span className="font-mono text-xs text-muted">image coming soon</span>
+                  </div>
+                ) : (
+                  <Image
+                    src={project.coverImage}
+                    alt={project.title}
+                    fill
+                    sizes="100vw"
+                    className="object-cover grayscale transition-[filter,transform] duration-700 group-active:grayscale-0"
+                    priority={project.slug === projects[0]?.slug}
+                  />
+                )}
               </div>
               <p className="mt-2 mb-6 font-body text-sm font-medium text-foreground">
                 {project.title}
