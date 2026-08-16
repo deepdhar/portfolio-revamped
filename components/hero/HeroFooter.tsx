@@ -29,6 +29,13 @@ export function HeroFooter() {
 
       <div>
         <div className="mb-2 font-mono text-xs uppercase tracking-[0.16em] text-muted">
+          Available
+        </div>
+        <span className="font-body text-sm text-foreground">Immediate</span>
+      </div>
+
+      <div>
+        <div className="mb-2 font-mono text-xs uppercase tracking-[0.16em] text-muted">
           Side Hustles
         </div>
         <Link
@@ -38,13 +45,6 @@ export function HeroFooter() {
         >
           View Projects →
         </Link>
-      </div>
-
-      <div>
-        <div className="mb-2 font-mono text-xs uppercase tracking-[0.16em] text-muted">
-          Available
-        </div>
-        <span className="font-body text-sm text-foreground">Immediate</span>
       </div>
     </div>
   );

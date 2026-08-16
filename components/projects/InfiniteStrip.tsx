@@ -165,7 +165,6 @@ export function InfiniteStrip({
     <div
       ref={containerRef}
       className="relative h-[100svh] overflow-hidden"
-      style={{ cursor: "ns-resize" }}
     >
       {/* ── The inner strip — positioned absolutely so translateY drives it ── */}
       <div ref={innerRef} className="absolute top-0 left-0 w-full will-change-transform">
