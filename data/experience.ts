@@ -14,21 +14,26 @@ export const experience: ExperienceEntry[] = [
     period: "May 2026 — Present",
     current: true,
     summary:
-      "Currently building features in a micro frontend architecture with agentic ai integration for an Telecom SaaS platform.",
-    focus: ["ReactJs", "React Native", "Node.js", "MFE", "Agentic AI", "Enterprise Systems"],
+      "Building next-gen digital experiences for a leading Middle Eastern telecom enterprise, engineering micro-frontend architectures and integrating agentic AI workflows into production.",
+    focus: [
+      "React.js",
+      "React Native",
+      "Micro Frontend Architecture",
+      "Agentic AI",
+    ],
   },
   {
     company: "Fleapo",
     role: "Senior Software Developer",
     period: "Mar 2025 — May 2026",
     summary:
-      "Led frontend architecture across web and mobile, shipped AI-integrated features into production.",
+      "Architected and shipped full-stack web and mobile applications to production, driving high-impact product launches and business scale.",
     focus: [
       "Next.js",
       "React Native",
-      "Google Maps",
+      "Performance",
       "AI / LLM integrations",
-      "Mobile releases",
+      "Scalable Product",
     ],
   },
   {
@@ -36,8 +41,8 @@ export const experience: ExperienceEntry[] = [
     role: "Associate Technical Consultant",
     period: "Aug 2022 — Aug 2024",
     summary:
-      "Started a two-year foundation across enterprise frontend systems, translating design into production interfaces.",
-    focus: ["Frontend Architecture", "Design-to-Code", "Client Delivery", "JavaScript"],
+      "Built and maintained mission-critical enterprise web applications, delivering pixel-perfect interfaces and resolving live production issues for tier-1 clients.",
+    focus: ["React.js", "JavaScript", "Scrum", "Production Support"],
   },
   {
     company: "Digital Product School",
@@ -45,6 +50,12 @@ export const experience: ExperienceEntry[] = [
     period: "Sep 2021 - Dec 2021",
     summary:
       "Collaborated in a 10-week design-led program to develop a full-stack MVP prototype, practicing agile sprints, UX principles, and rapid product iteration.",
-    focus: ["React Native", "Agile", "Product Development", "UI/UX Principles", "Maps"],
+    focus: [
+      "React Native",
+      "Agile",
+      "Product Development",
+      "UI/UX Principles",
+      "Maps",
+    ],
   },
 ];
