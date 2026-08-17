@@ -89,13 +89,19 @@ export const projects: Project[] = [
     role: "Full-Stack Developer",
     liveUrl: "https://lifeinsurance.adityabirlacapital.com/",
     description:
-      "Aditya Birla Sun Life is a leading insurance company in India. Worked on the UI as well as backend development of 3 new insurance plans and handled live hotfixes with the client dev team, bringing down ticket sizes by 90% during peak business hours.",
-    technologies: ["React.js", "JavaScript", "Java", "SQL", "Spring", "HTML", "CSS"],
+      "Aditya Birla Sun Life is a leading insurance provider in India. Shipped features for 3 new insurance plans and handled live production hotfixes alongside the client development team. Reduced production ticket volume by 90% during peak business hours through rapid issue resolution and deployment.",
+    technologies: [
+      "React.js",
+      "JavaScript",
+      "Java",
+      "SQL",
+      "Spring",
+      "HTML",
+      "CSS",
+    ],
     metric: "Reduced ticket sizes by 90% during peak hours",
-    // Drop your cover image at public/media/work/absli/absli.png when ready, then set mediaReady: true
     mediaSrc: "/media/work/absli/absli.png",
     mediaType: "image",
-    mediaReady: false,
     coverImage: "/media/work/absli/absli.png",
   },
 ];
