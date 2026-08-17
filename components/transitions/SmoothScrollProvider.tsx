@@ -34,5 +34,16 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  // Automatically reload when resizing across desktop (>= 1024px) and mobile (< 1024px)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mql = window.matchMedia("(min-width: 1024px)");
+    const handleBreakpointChange = () => {
+      window.location.reload();
+    };
+    mql.addEventListener("change", handleBreakpointChange);
+    return () => mql.removeEventListener("change", handleBreakpointChange);
+  }, []);
+
   return <>{children}</>;
 }

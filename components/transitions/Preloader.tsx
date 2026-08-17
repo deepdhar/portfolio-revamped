@@ -38,8 +38,12 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
     ).matches;
 
     if (reducedMotion) {
+      if (typeof window !== "undefined") {
+        (window as any).__PRELOADER_DONE__ = true;
+      }
       setDone(true);
       onComplete?.();
+      document.dispatchEvent(new CustomEvent("preloader:done"));
       return;
     }
 
@@ -83,12 +87,18 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
             ease: ease.expo,
             delay: 0.25,
             onComplete: () => {
+              if (typeof window !== "undefined") {
+                (window as any).__PRELOADER_DONE__ = true;
+              }
               setDone(true);
               onComplete?.();
               document.dispatchEvent(new CustomEvent("preloader:done"));
             },
           });
         } else {
+          if (typeof window !== "undefined") {
+            (window as any).__PRELOADER_DONE__ = true;
+          }
           setDone(true);
           onComplete?.();
           document.dispatchEvent(new CustomEvent("preloader:done"));

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { SocialLinks } from "@/components/common/SocialLinks";
 
 export function HeroFooter() {
   const [copied, setCopied] = useState(false);
@@ -25,6 +26,9 @@ export function HeroFooter() {
         >
           {copied ? "Email copied!" : "dhar2017.slg@gmail.com"}
         </button>
+        <div className="mt-3">
+          <SocialLinks className="flex items-center gap-4" />
+        </div>
       </div>
 
       <div>

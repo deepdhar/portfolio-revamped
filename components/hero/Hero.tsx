@@ -7,10 +7,13 @@ import gsap from "gsap";
 import { splitTextReveal, fadeIn } from "@/lib/animations/helpers";
 import { IndexList } from "@/components/projects/IndexList";
 import { InfiniteStrip } from "@/components/projects/InfiniteStrip";
+import { MobileHorizontalStrip } from "@/components/projects/MobileHorizontalStrip";
 import { HeroFooter } from "@/components/hero/HeroFooter";
+import { SocialLinks } from "@/components/common/SocialLinks";
 import { projects } from "@/data/projects";
 
-const STORAGE_KEY = "hero-intro-done";
+// Module-level in-memory flag across client-side page navigations
+let hasHeroIntroPlayed = false;
 
 export function Hero() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
@@ -23,12 +26,8 @@ export function Hero() {
   // Mobile contact copy state (separate from desktop HeroFooter)
   const [mobileCopied, setMobileCopied] = useState(false);
 
-  // Read sessionStorage synchronously at render time so the initial opacity
-  // is correct before the very first paint — avoids any flash of visible text.
-  const [alreadyPlayed] = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
-    return !!sessionStorage.getItem(STORAGE_KEY);
-  });
+  // If returning to home page via client-side navigation, elements are already ready
+  const isAlreadyDone = typeof window !== "undefined" && ((window as any).__PRELOADER_DONE__ || hasHeroIntroPlayed);
 
   function handleMobileCopy() {
     navigator.clipboard?.writeText("dhar2017.slg@gmail.com").catch(() => { });
@@ -37,12 +36,22 @@ export function Hero() {
   }
 
   useEffect(() => {
-    if (alreadyPlayed) return; // elements already visible via inline style
+    // If preloader already finished or intro already played (e.g. navigated back from another page),
+    // immediately show everything without re-triggering entrance animations
+    if ((window as any).__PRELOADER_DONE__ || hasHeroIntroPlayed) {
+      hasHeroIntroPlayed = true;
+      if (headlineRef.current) gsap.set(headlineRef.current, { opacity: 1 });
+      if (roleRef.current) gsap.set(roleRef.current, { opacity: 1, y: 0 });
+      if (indexRef.current) gsap.set(indexRef.current, { opacity: 1, y: 0 });
+      return;
+    }
 
     function runIntro() {
+      if (hasHeroIntroPlayed) return;
+      hasHeroIntroPlayed = true;
+
       const tl = gsap.timeline({
         defaults: { ease: "expo.out" },
-        onComplete: () => sessionStorage.setItem(STORAGE_KEY, "true"),
       });
 
       if (headlineRef.current) {
@@ -61,10 +70,16 @@ export function Hero() {
 
     document.addEventListener("preloader:done", runIntro, { once: true });
 
+    // Safety fallback timer to guarantee reveal if preloader was skipped
+    const fallbackTimer = setTimeout(() => {
+      runIntro();
+    }, 4000);
+
     return () => {
       document.removeEventListener("preloader:done", runIntro);
+      clearTimeout(fallbackTimer);
     };
-  }, [alreadyPlayed]);
+  }, []);
 
   return (
     <section id="top" className="grid grid-cols-1 lg:grid-cols-2">
@@ -74,7 +89,7 @@ export function Hero() {
           <h1
             ref={headlineRef}
             className="max-w-xl font-display text-display-1 font-black uppercase text-foreground"
-            style={alreadyPlayed ? undefined : { opacity: 0 }}
+            style={isAlreadyDone ? undefined : { opacity: 0 }}
           >
             {/* Each word is its own block span so splitTextReveal reads clean textContent per line */}
             <span ref={headlineLine1Ref} className="block">Software</span>
@@ -84,7 +99,7 @@ export function Hero() {
           <p
             ref={roleRef}
             className="mt-6 max-w-sm font-body text-base leading-relaxed text-muted sm:text-lg"
-            style={alreadyPlayed ? undefined : { opacity: 0 }}
+            style={isAlreadyDone ? undefined : { opacity: 0 }}
           >
             I design and build software that feels intuitive and works reliably.
             I focus on systems that stay fast as they grow, and on integrating intelligence without adding unnecessary complexity.
@@ -92,7 +107,7 @@ export function Hero() {
         </div>
 
         {/* Index list — desktop only */}
-        <div ref={indexRef} className="mt-20 hidden lg:block lg:mt-0" style={alreadyPlayed ? undefined : { opacity: 0 }}>
+        <div ref={indexRef} className="mt-20 hidden lg:block lg:mt-0" style={isAlreadyDone ? undefined : { opacity: 0 }}>
           <IndexList activeSlug={activeSlug} hovering={stripHovered} />
         </div>
 
@@ -110,54 +125,51 @@ export function Hero() {
         />
       </div>
 
-      {/* ── Mobile: project cards + contact at bottom ── */}
+      {/* ── Mobile: horizontal infinite strip + contact at bottom ── */}
       <div className="lg:hidden">
-        {/* Project cards — normal page scroll */}
-        <div className="container-edge mt-8 flex flex-col gap-1">
-          {projects.map((project) => (
-            <Link
-              key={project.slug}
-              href={`/work/${project.slug}`}
-              className="group block"
-            >
-              <div
-                className="relative w-full overflow-hidden"
-                style={{ height: "64vw", maxHeight: 320 }}
-              >
-                {project.mediaReady === false ? (
-                  <div className="flex h-full w-full items-center justify-center bg-surface">
-                    <span className="font-mono text-xs text-muted">image coming soon</span>
-                  </div>
-                ) : (
-                  <Image
-                    src={project.coverImage}
-                    alt={project.title}
-                    fill
-                    sizes="100vw"
-                    className="object-cover grayscale transition-[filter,transform] duration-700 group-active:grayscale-0"
-                    priority={project.slug === projects[0]?.slug}
-                  />
-                )}
-              </div>
-              <p className="mt-2 mb-6 font-body text-sm font-medium text-foreground">
-                {project.title}
-              </p>
-            </Link>
-          ))}
+        {/* Work Header */}
+        <div className="container-edge mt-12 mb-3 flex items-center justify-between">
+          <Link
+            href="/work"
+            className="font-mono text-xs uppercase tracking-[0.16em] text-muted transition-colors hover:text-foreground"
+          >
+            Work →
+          </Link>
         </div>
 
-        {/* Contact — mobile only, below carousel */}
-        <div className="container-edge mt-4 pb-16">
-          <div className="hairline mb-8" />
-          <div className="mb-1 font-mono text-xs uppercase tracking-[0.16em] text-muted">
-            Contact
-          </div>
-          <button
-            onClick={handleMobileCopy}
-            className="font-body text-sm text-foreground transition-colors duration-300 hover:text-muted"
+        {/* Project cards — horizontal infinite marquee */}
+        <div>
+          <MobileHorizontalStrip projects={projects} />
+        </div>
+
+        {/* Side Hustles button below strip */}
+        <div className="container-edge mt-5 flex items-center justify-between">
+          <Link
+            href="/side-hustles"
+            className="font-mono text-xs uppercase tracking-[0.16em] text-muted transition-colors hover:text-foreground"
           >
-            {mobileCopied ? "Email copied!" : "dhar2017.slg@gmail.com"}
-          </button>
+            Side Hustles →
+          </Link>
+        </div>
+
+        {/* Contact + Socials — mobile only, below carousel */}
+        <div className="container-edge mt-8 pb-16">
+          <div className="hairline mb-8" />
+          <div className="flex items-end justify-between">
+            <div>
+              <div className="mb-1 font-mono text-xs uppercase tracking-[0.16em] text-muted">
+                Contact
+              </div>
+              <button
+                onClick={handleMobileCopy}
+                className="font-body text-sm text-foreground transition-colors duration-300 hover:text-muted"
+              >
+                {mobileCopied ? "Email copied!" : "dhar2017.slg@gmail.com"}
+              </button>
+            </div>
+
+            <SocialLinks className="flex items-center gap-4" />
+          </div>
         </div>
       </div>
     </section>
