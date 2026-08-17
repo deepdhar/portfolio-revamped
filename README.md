@@ -2,6 +2,8 @@
 
 A premium, editorial personal portfolio built with Next.js, TypeScript, GSAP, Three.js, and Lenis smooth scroll.
 
+Live Preview🛜 - https://deepdhar.netlify.app
+
 ## Stack
 
 - **Next.js 14** (App Router) + **TypeScript** (strict mode)
